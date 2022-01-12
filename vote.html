@@ -1,0 +1,81 @@
+<html>
+<body onload="getDataFn()" style="font-size: 24px; color:black; margin:12px;">
+
+<button style="font-size: 36px; padding:12px; margin-bottom:12px;" onclick="vote()">Vote</button>
+
+<div>
+    <h3>voted TV:</h3>
+    <p id="votedTele"></p>
+    <h3>TV Rank:</h3>
+    <p id="teleRank"></p>
+</div>
+<div>
+    <h3>voted film :</h3>
+    <p id="votedFilm"></p>
+    <h3>film rank:</h3>
+    <p id="filmRank"></p>
+</div>
+
+<script type="text/javascript" src="https://static.m1905.cn/??https/2020lpstop/js/common.js,js/core/jquery-edge.min.js,https/2020lpstop/js/wxShare.js,https/2022lpstop/js/index.min.js"></script>
+<script>
+
+    function vote() {
+        var Ai = "filmlist=54,54,54,54,54,54,54,16,16,16,16,16,16,16,48,48,48,48,48,48";
+        //var Ai = "filmlist=52,53,54,55,92,88,72,95,66,69,1,2,22,23,38,42,49,16,48,18";
+        clearResult();
+        $.ajax({
+            url: "https://promotion.1905.com/Lottery/?m=Bluefilm&a=createfilmtele2021",
+            data: Ai,
+            type: "GET",
+            dataType: "jsonp",
+            success: function(i) {
+                var Aj = i;
+                if (Aj.status == "200") {
+                    getDataFn();
+                }
+            },
+        });
+    }
+
+    function getDataFn() {
+        $.ajax({
+            url: "https://promotion.1905.com/Lottery/?m=Bluefilm&a=BlueFilmHitsRank",
+            dataType: "jsonp",
+            type: "get",
+            success: function(A) {
+                console.log("A", A);
+                var votedFilm = A.data.film.filter(function(a) {
+                    return (a.filmid == 16 || a.filmid == 48);
+                });
+                $("#votedFilm").html(JSON.stringify(votedFilm));
+                
+                var sortedFilm = A.data.film.sort(function(a,b) {
+                    return b.total - a.total;
+                });
+
+                $("#filmRank").html(JSON.stringify(sortedFilm));
+
+
+                var votedTele = A.data.tele.filter(function(a) {
+                    return (a.filmid == 54);
+                });
+                $("#votedTele").html(JSON.stringify(votedTele));
+                
+                var sortedTele = A.data.tele.sort(function(a,b) {
+                    return b.total - a.total;
+                });
+
+                $("#teleRank").html(JSON.stringify(sortedTele));
+            }
+        })
+    }
+
+    function clearResult() {
+        $("#votedFilm").html('');
+        $("#filmRank").html('');
+        $("#votedTele").html('');
+        $("#teleRank").html('');
+    }
+</script>
+</body>
+</html>
