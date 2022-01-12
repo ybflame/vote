@@ -21,7 +21,7 @@
 
 <script type="text/javascript" src="https://static.m1905.cn/??https/2020lpstop/js/common.js,js/core/jquery-edge.min.js,https/2020lpstop/js/wxShare.js,https/2022lpstop/js/index.min.js"></script>
 <script>
-    var top5Tele = "filmlist=52,53,54,55,92"; 
+    var top5Tele = "filmlist=52,53,54"; 
     var top5Film = "2,4,6,16,48";
     var bottom5Tele = "";
     var bottom5Film = "";
@@ -29,7 +29,7 @@
     function vote() {
         //var Ai = "filmlist=54,54,54,54,54,54,54,16,16,16,16,16,16,16,48,48,48,48,48,48"; 
         var Ai = top5Tele + "," + bottom5Tele + "," + top5Film + "," + bottom5Film;
-        Ai = Ai.replace("63","100");
+        Ai = Ai.replace("63","100").replace("66","55").replace("81","92");
         console.log("ai", Ai);
         clearResult();
         $.ajax({
