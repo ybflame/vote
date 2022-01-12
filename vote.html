@@ -1,5 +1,5 @@
 <html>
-<body onload="getDataFn()" style="font-size: 24px; color:black; margin:12px;">
+<body onload="onLoad()" style="font-size: 24px; color:black; margin:12px;">
 
 <button style="font-size: 100px; padding:12px; margin-bottom:12px;" onclick="vote()">Vote</button>
 
@@ -18,10 +18,14 @@
 
 <script type="text/javascript" src="https://static.m1905.cn/??https/2020lpstop/js/common.js,js/core/jquery-edge.min.js,https/2020lpstop/js/wxShare.js,https/2022lpstop/js/index.min.js"></script>
 <script>
-
+    var top5Tele = "filmlist=52,53,54,55,92"; 
+    var top5Film = "2,4,6,16,48";
+    var bottom5Tele = "";
+    var bottom5Film = "";
     function vote() {
-        var Ai = "filmlist=54,54,54,54,54,54,54,16,16,16,16,16,16,16,48,48,48,48,48,48";
-        //var Ai = "filmlist=52,53,54,55,92,88,72,95,66,69,1,2,22,23,38,42,49,16,48,18";
+        //var Ai = "filmlist=54,54,54,54,54,54,54,16,16,16,16,16,16,16,48,48,48,48,48,48"; 
+        var Ai = top5Tele + "," + bottom5Tele + "," + top5Film + "," + bottom5Film;
+        console.log("ai", Ai);
         clearResult();
         $.ajax({
             url: "https://promotion.1905.com/Lottery/?m=Bluefilm&a=createfilmtele2021",
@@ -52,6 +56,11 @@
                 var sortedFilm = A.data.film.sort(function(a,b) {
                     return b.total - a.total;
                 });
+                var bottom5FilmArr = sortedFilm.slice(-5);
+                bottom5Film = bottom5FilmArr.map(function(a) {
+                    return a.filmid;
+                }).join(",");
+                console.log("bottom5Film", bottom5FilmArr);
 
                 $("#filmRank").html(JSON.stringify(sortedFilm));
 
@@ -65,9 +74,21 @@
                     return b.total - a.total;
                 });
 
+                var bottom5TeleArr = sortedTele.slice(-5);
+                bottom5Tele = bottom5TeleArr.map(function(a) {
+                    return a.filmid;
+                }).join(",");
+                console.log("bottom5Tele", bottom5TeleArr);
+
+
                 $("#teleRank").html(JSON.stringify(sortedTele));
             }
         })
+    }
+
+    function onLoad() {
+        getDataFn();
+        //setInterval(vote, 10000);
     }
 
     function clearResult() {
