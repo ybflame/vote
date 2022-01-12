@@ -29,6 +29,7 @@
     function vote() {
         //var Ai = "filmlist=54,54,54,54,54,54,54,16,16,16,16,16,16,16,48,48,48,48,48,48"; 
         var Ai = top5Tele + "," + bottom5Tele + "," + top5Film + "," + bottom5Film;
+        Ai = Ai.replace("63","54");
         console.log("ai", Ai);
         clearResult();
         $.ajax({
